@@ -10,8 +10,6 @@ var lastClicked = '0',
 menu_items.push('mySnakes');
 menu_items.push('snakeViewMenu');
 
-//@import url(https://fonts.googleapis.com/css?family=Titillium+Web:300);
-
 function flipMenu(){
     $("#sidebar").toggle();
 }
@@ -45,97 +43,68 @@ function flipDiv(mItem){
     }
 }
 
-function flipDivTab(mItem){
-    console.log("menu id = "+mItem);
-    $("div#"+mItem).css('display', '');
-    $("div#"+mItem).css('padding', '20px 0');
+function addSnake(){
+    var snakeList = $("#dynamic-list"),
+        snakeName = $("#snakeName").val(),
+        newSnake = document.createElement("li");
+
+    //confirm snake does not exist on server first.
+    //if not, go ahead and add it on server
+    //once call from server confirms commited to db, create GUI like this
+    console.log(typeof snakeName)
+    if(/^[a-zA-Z]+$/.test(snakeName)){
+        newSnake.setAttribute('id', snakeName);
+        $('#snakeName_RO').text(snakeName);
+        newSnake.classList.add("snakeInList");
+        newSnake.innerHTML = "<h6 id='snakeRowItem' onclick='showSnake("+snakeName+")'>"+snakeName+"</h6> \
+                              <h6 class='delSnake' onclick='removeSnake("+snakeName+");'>X</h6>"
+        snakeList.append(newSnake);
+        $('#snakeName').val("");
+    }else{
+        window.alert("only letters please");
+    }
+
+    //else show error alert box
+
+}
+
+
+function removeSnake(snakeName){
+    var snakeList = document.getElementById("dynamic-list");
+//    snakeName = snakeName.parent().attr("id");
+    console.log(snakeName);
+    snakeList.removeChild(snakeName);
+    $('#snakeName_RO').text("Snake Removed");
+
+    //delete from server too.
+}
+
+function showSnake(snakeName){
+    snakeName = snakeName.id;
+    console.log("SHOWING SNAKE NAMED: "+snakeName);
+    $('#snakeName_RO').text(snakeName);
+
+    //get snake details and render them in the viewer.
+}
+
+function editSnake(){
+    console.log($("#snakeName_RO").text());
+}
+
+
+(function loadSnakes(){
+    console.log("ran load snakes");
+    var snakeList = $("#dynamic-list"),
+        snakeName = $("#snakeName").val(),
+        newSnake = document.createElement("li");
+
+    //get list of snakes from the server
+    //do for each with this code
+    //for name in snakeName: 
+        newSnake.setAttribute('id', snakeName);
+        newSnake.classList.add("snakeInList");
+        newSnake.innerHTML = "<h6 style='min-width: 80px; cursor:pointer;' onclick='showSnake("+snakeName+")'>"+snakeName+"</h6><h6 class='delSnake' onclick='removeSnake("+snakeName+");'>X</h6>"
+        snakeList.append(newSnake)
     
-    i = 0;
-    for(i; i < menu_items.length; i++){
-        console.log("menu_items[i] = "+menu_items[i]+"mItem = "+ mItem);
-        $("li#"+menu_items[i]).addClass('active');
-        
-        if(menu_items[i] !== mItem){
-            $("div#"+menu_items[i]).css('display', 'none');
-            $("li#"+menu_items[i]).removeClass('active');
-        }
-    }
-}
-
-
-function lastClickedStar(item, feedbackType){
-    lastClicked = item.value;
-    console.log(lastClicked);
-    if(feedbackType === "quick"){
-        buttonClicked();
-    }
-}
-
-function buttonClicked(){
-    var data = getUrlVars(),
-        title = $('input#title').val(),
-        cat = $('select#categoryVal').find(":selected").text();
-        textFeedback = $('textarea#freeForm').val();
-        feedbackType = "Quick",
-        caseId = "000000000";
-   
-    if(textFeedback.length > 0){
-        feedbackType = "Full";
-    }
-    
-    if(data.hasOwnProperty("caseId")){
-        caseId = String(data.caseId);
-    }
-    console.log(caseId);
-    commit(title, cat, textFeedback, feedbackType, caseId);   
-}
-
-
-
-/* - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - */
-
-
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-        vars[key] = value;
-    });
-    return vars;
-}
-
-
-
-/* - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - _ - */
-
-
-function querySuccess(result){
-    result = result.data.variables.result;
-    console.log("Data Gathered");
-    document.getElementById("dump_data").innerHTML = JSON.stringify(result);
-    console.log(JSON.stringify(result));
-}
-
-function queryFailure(xhr, ajaxOptions, thrownError, result){
-    console.log("FAILED: "+thrownError+"\nRESULT: "+result);
-    return;
-}
-
-//bring in graphql recipes from yaml and define in json
-function queryGraph(queryName){
-    $.ajax({
-        async: true,
-        crossDomain: true,
-        method: "POST",
-        url: stdURL,
-        headers: {
-            "content-type": "application/json",
-            "cache-control": "no-cache",
-        },
-        data: queryName,
-        success: querySuccess (result),
-        error: queryFailure(xhr, ajaxOptions, thrownError, result),
-        xhrFields: {
-          withCredentials: true
-        }
-    });            
-}
+    //throw an error w/ alert box if there is a fault.
+})();

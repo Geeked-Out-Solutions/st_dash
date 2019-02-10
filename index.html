@@ -4,19 +4,26 @@
         <meta charset="utf-8">
         <title>Serpent Tracker</title>
         <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico" />
-        <link rel="stylesheet" type="text/css" href="/css/cui-standard.min.css?v=1.00" />
-        <link rel="stylesheet" type="text/css" href="/css/index.css?v=1.00" />
+        <!--<link rel="stylesheet" type="text/css" href="/css/cui-standard.min.css?v=1.00" />
+        <link rel="stylesheet" type="text/css" href="/css/index.css?v=1.00" />-->
+        <link rel="stylesheet" type="text/css" href="/css/cleaned.css?v=1.00" />
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css?v=1.00" />
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js?v=1.00"></script>
         <!--<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js?v=1.00"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/arrive/2.4.1/arrive.min.js?v=1.00"></script>-->
-        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:300' rel='stylesheet' type='text/css'>
+        <link href="c rel='stylesheet" type='text/css'>
         <script type="text/javascript" src="/js/index.js?v=1.00"></script>
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Titillium+Web:300)" />
+
+
     </head>
-    <body>
+    <body id="body">
         <div style="height:100%;">
             <!--<main style='margin-left: 0;overflow: hidden; height:100%;'>-->
-                <header class="header header--compressed" style="background: white; color: cadetblue;">
+
+
+                <!--header component-->
+                <header class="header header--compressed" style="background: white; color: cadetblue; border-bottom: 1px solid #448846;">
                     <div class="header-bar container" >
                         <a style="display: none;" id="menuFlipper" class="btn btn--small btn--icon toggle-menu btn--pirmary toggle-menu" onclick="flipMenu()">
                             <span class="icon-list-menu"></span>
@@ -26,7 +33,7 @@
                         </a>
                         <div class="header-bar__main">
                             <div class="header-heading">
-                                <h1 class="page-title">Serpent Tracker <small style="font-size:12px;"> beta</small></h1>
+                                <h1 class="page-title"style="font-size:24px;">Serpent Tracker <small style="font-size:12px;"> beta</small></h1>
                             </div>
                         </div>
 
@@ -35,16 +42,21 @@
                                 <img src="https://image.flaticon.com/icons/png/512/149/149452.png" width="26px" height="26px" alt="Profile" title="Profile">
                             </a>
                             <a class="top_menus" id="profile" href="" style='padding-right: 20px;' title="Logout" target="_blank">
-                                <img src="https://image.flaticon.com/icons/svg/633/633671.svg" width="26spx" height="26px" alt="Logout" title="Logout">
+                                <img src="https://image.flaticon.com/icons/svg/633/633671.svg" width="24px" height="26px" alt="Logout" title="Logout">
                             </a>
                         </div> 
                     </div>
                 </header>
+
+
+                
+                <!--left bar and right content-->
                 <div style="height: 100%;">
 
-                    <nav class="sidebar myDiv" id="sidebar" style="float: left; position: inherit; color: #fff; background: #4a6838;">
+                    <!--sidebar component-->
+                    <nav class="sidebar myDiv" id="sidebar" style="float: left; position: inherit; color: #fff; background: #448846;">
                         <div class="sidebar__header">
-                            <div class="sidebar__header-title page-title" style="font-size:16px;">Menu</div>
+                            <div class="sidebar__header-title page-title" style="font-family:'Titillium Web', sans-serif; font-size:16px;">Menu</div>
                         </div>
                         <ul>
                             <!--<li id="overview_container"class="sidebar__drawer sidebar__drawer--opened">
@@ -65,29 +77,105 @@
                                     <span class="qtr-margin-left">My Snakes</span>
                                 </a>
                             </li>
-                            <li class="sidebar__item" id="overview">
+                            <!--<li class="sidebar__item" id="overview">
                                 <a id='snakeViewMenu' onclick='flipDiv(this.id)'>
                                     <span class="qtr-margin-left">Snake Viewer</span>
                                 </a>
-                            </li>                                                     
+                            </li>-->
                         </ul>
                     </nav>
+
+
+                    <!--content component for my snakes-->
                     <div class="content mainContent">
                         <div class="container" style="width: 95%;">
                             <div id='mySnakes' class="section" style="background: #f7f7f9;">
                                 <div id="app" class="panel panel--loose panel--bordered tileShadow" style="box-shadow: 0 8px 14px rgba(0, 0, 0, 0.3);">
-                                    <h2 class="content-title">My Snakes</h2s>
+                                    <h2 class="content-title">My Snakes</h2>
                                     <br>  
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            
+                                            <div id='snakeMgmtWrapper'>
+                                                <div id='addSnakeWrapper'> 
+                                                    <p class='snakeMgmtTitles'>Select a Snake to Manage</p>
+                                                    <ul id="dynamic-list"></ul>
+                                                    <p class='snakeMgmtTitles'>Add a new Snake to track</p>
+                                                    <hr id='formBreak'>
+                                                    <p class='snakeMgmtTitles'>Name of Snake:<small>(First character must be a letter)</small></p>
+                                                    <input type="text" id="snakeName" maxlength="40" />
+                                                    <button id='addSnake' onclick="addSnake()">Add Snake</button>
+                                                </div>
+                                                <div id='snakeViewWrapper'> 
+                                                    <div id='snakeTitleWrapper'>
+                                                        <h2 id="snakeName_RO">snake</h2> 
+                                                        <h6 id="edit" onclick="editSnake();">edit</h6>
+                                                    </div>
+                                                    <img id="snakeImage" src='/img/sample.png' />
+                                                    <br>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="descInput" class="label1">Description:</label>
+                                                            <input type="text" class="input1" name="descInput" />
+                                                    </p>
+                                                    <p class="snakeViewLabel">
+                                                        <label for="typeInput" class="label1">Type:</label>
+                                                        <input type="text" class="input1" name="typeInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="sizeInput" class="label1">Size:</label>
+                                                            <input type="text" class="input1" name="sizeInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="weightInput" class="label1">Weight:</label>
+                                                            <input type="text" class="input1" name="weightInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="sexfs" class="label1">Sex:</label>
+                                                            <label><input type="radio" value="Male" name="sexRadio" />Male</label>
+                                                            <label><input type="radio" value="Female" name="sexRadio" />Female</label>
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="breedInput" class="label1">Breeder:</label>
+                                                            <input type="text" class="input1" name="breedInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="morphInput" class="label1">Morphs:</label>
+                                                            <input type="text" class="input1" name="morphInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="genesInput" class="label1">Genes:</label>
+                                                            <input type="text" class="input1" name="genesInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="shareInput" class="label1">Share in public Snake Viewer:</label>
+                                                            <input type="checkbox" class="input1" name="shareInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="rackInput" class="label1">Rack/Tub details:</label>
+                                                            <input type="text" class="input1" name="rackInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="deceasedInput" class="label1">Deceased:</label>
+                                                            <input type="checkbox" class="input1" name="deceasedInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="originInput" class="label1">Origin (Self, Captive, Wild):</label>
+                                                            <input type="text" class="input1" name="originInput" />
+                                                    </p>
+                                                    <p class='snakeViewLabel'>
+                                                            <label for="sellInput" class="label1">Publish to marketplace?</label>
+                                                            <input type="checkbox" class="input1" name="sellInput" />
+                                                    </p>                                                    
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="content">
+
+                    <!--content component for snake viewer-->
+                    <!--<div class="content">
                         <div class="container" style="width: 95%;">
                             <div id='snakeViewMenu' class="section" style="display:none; background: #f7f7f9;">
                                 <div id="app" class="panel panel--loose panel--bordered tileShadow" style="box-shadow: 0 8px 14px rgba(0, 0, 0, 0.3);">
@@ -101,20 +189,14 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                                        
+                    </div>  
+                    -->
                 </div>
 
-
-                <footer class="footer footer--new footer--basic" style="    bottom: 0;
-                position: absolute;
-                width: 100%; height: 52px; z-index:1200; background: black; padding: 8px;">
+                <!--footer component-->
+                <footer class="footer footer--new footer--basic" id="myFooter">
                     <div class="footer__links">
-                        <ul class="list">
-                            <li><a href="" target="_blank">About</a></li>
-                            <li><a href="" target="_blank">Legal</a></li>
-                            <li><a href="" target="_blank">Contact Us</a></li>
-                            <li><a href="" target="_blank">Feedback</a></li>
-                        </ul>
+                        <h6>put words here</h6>
                     </div>
                 </footer>
             <!--</main>-->
